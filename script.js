@@ -37,6 +37,9 @@ function validate(nameValue, urlValue) {
 
 // Build bookmarks DOM
 function buildBookmarks() {
+  // Remove all bookmark elements
+  bookmarksContainer.textContent = '';
+  // Build items
   bookmarks.forEach((bookmark) => {
     const { name, url } = bookmark;
     // Item
@@ -83,6 +86,18 @@ function fetchBookmarks() {
   buildBookmarks();
 }
 
+// Delete Bookmark
+function deleteBookmark(url) {
+  bookmarks.forEach((bookmark, i) => {
+    if (bookmark.url === url) {
+      bookmarks.splice(i, 1);
+    }
+  });
+  // Update bookmarks array in localStorage, re-populate DOM
+  localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+  fetchBookmarks();
+}
+
 // Handle data from From
 function storeBookmark(e) {
   e.preventDefault();
@@ -100,7 +115,7 @@ function storeBookmark(e) {
   };
   bookmarks.push(bookmark);
   localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-  // fetchBookmarks();
+  fetchBookmarks();
   bookmarkForm.reset();
   websiteNameEl.focus();
 }
